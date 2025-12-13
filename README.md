@@ -149,10 +149,10 @@ Run the tests:
 
 mvn test
 
-12. Contributing
+## 12. Contributing
 
 Feel free to fork this project and create pull requests. If you find any issues, please create a GitHub Issue to discuss.
 
-13. License
+## 13. License
 
 MIT License - see LICENSE file for details.
