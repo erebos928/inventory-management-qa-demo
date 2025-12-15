@@ -5,6 +5,11 @@
 **Related Scenario:** TS-1
 **Related Requirements:** FR-1
 
+**Priority:** High
+**Severity:** Critical
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+
 **Preconditions:**
 
 * User has access to the inventory management system
@@ -37,6 +42,11 @@
 **Related Scenario:** TS-2
 **Related Requirements:** FR-1, BR-1
 
+**Priority:** High
+**Severity:** Major
+**Test Type:** Functional / Negative
+**Automation Candidate:** Yes
+
 **Preconditions:**
 
 * User has access to the inventory management system
@@ -57,6 +67,14 @@
 **Expected Result:**
 
 * Product is not created
+* Validation error message is displayed for product name field empty
+
+3. Enter a valid quantity
+4. Click on Save / Create button
+
+**Expected Result:**
+
+* Product is not created
 * Validation error message is displayed for product name
 
 ---
@@ -65,6 +83,11 @@
 
 **Related Scenario:** TS-3
 **Related Requirements:** FR-1, BR-2
+
+**Priority:** High
+**Severity:** Major
+**Test Type:** Functional / Negative
+**Automation Candidate:** Yes
 
 **Preconditions:**
 
@@ -88,12 +111,24 @@
 * Product is not created
 * Validation error message is displayed for quantity
 
+4. Click on Save / Create button
+
+**Expected Result:**
+
+* Product is not created
+* Validation error message is displayed for quantity
+
 ---
 
 ## TC-4: View Product List
 
 **Related Scenario:** TS-4
 **Related Requirements:** FR-2
+
+**Priority:** Medium
+**Severity:** Major
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
 
 **Preconditions:**
 
@@ -114,6 +149,11 @@
 
 **Related Scenario:** TS-5
 **Related Requirements:** FR-3
+
+**Priority:** High
+**Severity:** Critical
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
 
 **Preconditions:**
 
@@ -143,6 +183,11 @@
 **Related Scenario:** TS-6
 **Related Requirements:** FR-3, BR-4
 
+**Priority:** Medium
+**Severity:** Major
+**Test Type:** Functional / Negative
+**Automation Candidate:** Partial
+
 **Preconditions:**
 
 * A discontinued product exists in the system
@@ -164,6 +209,11 @@
 
 **Related Scenario:** TS-7
 **Related Requirements:** FR-4
+
+**Priority:** High
+**Severity:** Critical
+**Test Type:** Functional / Destructive
+**Automation Candidate:** Yes
 
 **Preconditions:**
 
