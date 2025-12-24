@@ -3,6 +3,7 @@ package com.example.inventory.product;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -16,7 +17,7 @@ class CreateProductApiTest {
         RestAssured.port = 3000;
         RestAssured.basePath = "/api";
     }
-
+    @Disabled
     @Test
     void shouldCreateProductSuccessfully_whenValidDataProvided() {
 

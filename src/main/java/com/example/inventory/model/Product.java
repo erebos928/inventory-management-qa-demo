@@ -1,6 +1,7 @@
 package com.example.inventory.model;
 
 
+import com.example.inventory.dto.ProductDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,9 +36,6 @@ public class Product {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -46,31 +44,9 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getDescription() {
-        return description;
+    public static Product fromDTO(ProductDTO productDTO){
+        return new Product(productDTO.name(),productDTO.description(),productDTO.price(),productDTO.quantity());
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     // toString method for easy debugging
     @Override
     public String toString() {
