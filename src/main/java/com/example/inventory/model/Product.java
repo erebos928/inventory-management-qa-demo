@@ -31,6 +31,7 @@ public class Product {
         this.quantity = quantity;
     }
 
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -47,6 +48,10 @@ public class Product {
     public static Product fromDTO(ProductDTO productDTO){
         return new Product(productDTO.name(),productDTO.description(),productDTO.price(),productDTO.quantity());
     }
+    public static ProductDTO toDTO(Product product) {
+        return new ProductDTO(product.id, product.name, product.description, product.price, product.quantity);
+    }
+
     // toString method for easy debugging
     @Override
     public String toString() {

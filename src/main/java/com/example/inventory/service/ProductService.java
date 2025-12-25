@@ -15,8 +15,9 @@ public class ProductService {
         this.repository = repository;
     }
     @Transactional
-    public void createProduct(ProductDTO productDTO){
+    public ProductDTO createProduct(ProductDTO productDTO){
         Product product = Product.fromDTO(productDTO);
-        repository.save(product);
+        return Product.toDTO(repository.save(product));
+
     }
 }

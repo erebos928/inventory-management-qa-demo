@@ -14,7 +14,7 @@ class ProductServiceTest {
     private ProductRepository repository;
     @InjectMocks
     ProductService service;
-    ProductDTO productDTO = new ProductDTO("IPhone","Cellular phone",695.50,10);
+    ProductDTO productDTO = new ProductDTO(null,"IPhone","Cellular phone",695.50,10);
     @Test
     public void testCreateProduct(){
         service.createProduct(productDTO);
