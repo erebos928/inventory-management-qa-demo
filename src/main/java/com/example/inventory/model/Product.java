@@ -49,7 +49,7 @@ public class Product {
         return new Product(productDTO.name(),productDTO.description(),productDTO.price(),productDTO.quantity());
     }
     public static ProductDTO toDTO(Product product) {
-        return new ProductDTO(product.id, product.name, product.description, product.price, product.quantity);
+        return new ProductDTO(product.id == null ? null : product.id, product.name, product.description, product.price, product.quantity);
     }
 
     // toString method for easy debugging
@@ -62,5 +62,9 @@ public class Product {
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public void setId(long l) {
+        id = l;
     }
 }

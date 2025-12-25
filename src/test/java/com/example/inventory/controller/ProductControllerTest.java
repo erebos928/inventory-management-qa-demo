@@ -40,7 +40,7 @@ class ProductControllerTest {
     }
     @Test
     void testCreateProduct() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/product/create")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDTO))
         ).andExpect(MockMvcResultMatchers.status().isCreated())

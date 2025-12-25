@@ -16,8 +16,9 @@ public class ProductService {
     }
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO){
+        if (productDTO == null)
+            return null;
         Product product = Product.fromDTO(productDTO);
         return Product.toDTO(repository.save(product));
-
     }
 }

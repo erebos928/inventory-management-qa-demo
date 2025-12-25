@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api")
 public class ProductController {
     @Autowired
     private final ProductService service;
@@ -16,7 +16,7 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO createProduct(@RequestBody ProductDTO productDTO){
         return service.createProduct(productDTO);
