@@ -14,7 +14,7 @@ class CreateProductApiTest {
     @BeforeAll
     static void setup() {
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 3000;
+        RestAssured.port = 8080;
         RestAssured.basePath = "/api";
     }
     @Disabled
