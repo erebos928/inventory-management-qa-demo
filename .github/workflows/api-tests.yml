@@ -1,0 +1,32 @@
+name: API Tests (RestAssured)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build project
+        run: mvn clean package -DskipTests
+
+      - name: Start Spring Boot application
+        run: |
+          mvn spring-boot:run &
+          sleep 20
+
+      - name: Run API tests
+        run: mvn test
