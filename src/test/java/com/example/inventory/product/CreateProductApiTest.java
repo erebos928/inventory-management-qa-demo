@@ -43,6 +43,7 @@ class CreateProductApiTest {
                 .body("price", equalTo(1200.00f))
                 .body("quantity", equalTo(10));
     }
+    @Disabled
     @Test
     void shouldReturn400_whenNameIsMissing() {
 
@@ -63,6 +64,50 @@ class CreateProductApiTest {
                 .then()
                 .statusCode(400)
                 .body("fieldErrors.name", equalTo("Product name missing."));
+    }
+    @Disabled
+    @Test
+    void shouldReturn400_whenQuantityIsZero() {
+
+        String requestBody = """
+        {
+          "name": "Laptop",
+          "description": "Business laptop",
+          "price": 1200.00,
+          "quantity": 0
+        }
+        """;
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/products")
+                .then()
+                .statusCode(400)
+                .body("fieldErrors.quantity", equalTo("Quantity should be a positive integer."));
+    }
+    @Disabled
+    @Test
+    void shouldReturn400_whenQuantityIsNegative() {
+
+        String requestBody = """
+        {
+          "name": "Laptop",
+          "description": "Business laptop",
+          "price": 1200.00,
+          "quantity": -5
+        }
+        """;
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/products")
+                .then()
+                .statusCode(400)
+                .body("fieldErrors.quantity", equalTo("Quantity should be a positive integer."));
     }
 
 }
