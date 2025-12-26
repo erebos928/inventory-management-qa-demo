@@ -43,4 +43,26 @@ class CreateProductApiTest {
                 .body("price", equalTo(1200.00f))
                 .body("quantity", equalTo(10));
     }
+    @Test
+    void shouldReturn400_whenNameIsMissing() {
+
+        String requestBody = """
+        {
+          "name": "",
+          "description": "Business laptop",
+          "price": 1200.00,
+          "quantity": 10
+        }
+        """;
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/products")
+                .then()
+                .statusCode(400)
+                .body("fieldErrors.name", equalTo("Product name missing."));
+    }
+
 }

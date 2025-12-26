@@ -1,4 +1,10 @@
 package com.example.inventory.dto;
 
-public record ProductDTO(Long id,String name,String description, double price, int quantity) {
+import jakarta.validation.constraints.NotBlank;
+
+public record ProductDTO(Long id,
+                         @NotBlank(message="Product name missing.") String name,
+                         String description,
+                         double price,
+                         int quantity) {
 }
