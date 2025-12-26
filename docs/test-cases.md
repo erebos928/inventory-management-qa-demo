@@ -50,6 +50,7 @@
 **Preconditions:**
 
 * User has access to the inventory management system
+* Inventory API running
 
 **Test Data:**
 
@@ -59,25 +60,15 @@
 
 **Steps:**
 
-1. Navigate to the Create Product page
-2. Leave the product name field empty
-3. Enter a valid quantity
-4. Click on Save / Create button
+1. Send a POST request to /api/products
+2. Request body does not contain the name field
+3. Content-Type is application/json
 
 **Expected Result:**
 
+* HTTP status code is 400 Bad Request
 * Product is not created
-* Validation error message is displayed for product name field empty
-
-3. Enter a valid quantity
-4. Click on Save / Create button
-
-**Expected Result:**
-
-* Product is not created
-* Validation error message is displayed for product name
-
----
+* Response contains validation error for missing product name
 
 ## TC-3: Create Product with Negative Quantity
 
