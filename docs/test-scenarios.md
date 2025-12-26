@@ -39,7 +39,7 @@ A client sends a request to create a product without providing the `name` field.
 - This scenario is suitable for automation using RestAssured
 
 ## TS-3: Create Product – Non-positive Quantity
-Related Requirement: FR-1, BR-2  
+Related Requirement: FR-2, BR-2  
 Description: Verify that the system rejects negative quantity values.
 ### Feature
 Create Product API
