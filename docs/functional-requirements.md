@@ -12,7 +12,7 @@ The system shall allow the user to create a new product with the following attri
 - Product ID (auto-generated)
 - Name (mandatory)
 - Category
-- Quantity (must be >= 0)
+- Quantity (must be > 0)
 - Price (must be >= 0)
 - Status (ACTIVE, DISCONTINUED)
 
