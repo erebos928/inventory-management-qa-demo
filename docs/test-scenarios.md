@@ -4,9 +4,39 @@
 Related Requirement: FR-1  
 Description: Verify that a product can be created with valid inputs.
 
-## TS-2: Create Product – Missing Name
-Related Requirement: FR-1, BR-1  
-Description: Verify that the system rejects product creation when name is missing.
+## TS-2 – Create Product with Missing Product Name
+
+### Feature
+Create Product API
+
+### Description
+Verify that the system does not allow creation of a product when the product name is missing and returns an appropriate validation error.
+
+### Business Context
+Product name is a mandatory field required to uniquely identify a product in the inventory system. Creating a product without a name must be prevented to ensure data integrity.
+
+### Preconditions
+- Inventory Management API is running
+- User has permission to create products
+- API endpoint `/api/products` is accessible
+
+### Trigger
+A client sends a request to create a product without providing the `name` field.
+
+### Expected Behavior
+- The product is **not created**
+- The API rejects the request
+- A validation error related to the missing product name is returned
+
+### Expected Result Summary
+- HTTP response indicates a client error (4xx)
+- Error message clearly states that the product name is required
+- No product record is persisted in the system
+
+### Notes
+- This scenario focuses on API-level validation
+- Detailed validations (null, empty, whitespace) will be covered in individual test cases
+- This scenario is suitable for automation using RestAssured
 
 ## TS-3: Create Product – Negative Quantity
 Related Requirement: FR-1, BR-2  
