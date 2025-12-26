@@ -27,7 +27,7 @@ The system shall allow the user to delete a product.
 
 ## 3. Business Rules
 - BR-1: Product name is mandatory.
-- BR-2: Quantity cannot be negative.
+- BR-2: Quantity cannot be negative or zero.
 - BR-3: Price cannot be negative.
 - BR-4: A discontinued product cannot be updated.
 
