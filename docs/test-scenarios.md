@@ -38,10 +38,31 @@ A client sends a request to create a product without providing the `name` field.
 - Detailed validations (null, empty, whitespace) will be covered in individual test cases
 - This scenario is suitable for automation using RestAssured
 
-## TS-3: Create Product – Negative Quantity
+## TS-3: Create Product – Non-positive Quantity
 Related Requirement: FR-1, BR-2  
 Description: Verify that the system rejects negative quantity values.
-
+### Feature
+Create Product API
+### Business Context
+Product quantity is a mandatory field required to determine the qualtity of the product and must be a positive number.
+### Preconditions
+Inventory Management API is running
+User has permission to create products
+API endpoint /api/products is accessible
+### Trigger
+A client sends a request to create a product with negative or zero quantity field.
+### Expected Behavior
+The product is not created
+The API rejects the request
+A validation error related to the negative product quantity is returned
+### Expected Result Summary
+HTTP response indicates a client error (4xx)
+Error message clearly states that quantity should be positive integer
+No product record is persisted in the system
+### Notes
+This scenario focuses on API-level validation
+Detailed validations (negative, zero) will be covered in individual test cases
+This scenario is suitable for automation using RestAssured
 ## TS-4: View Product List
 Related Requirement: FR-2  
 Description: Verify that all products are displayed correctly.
