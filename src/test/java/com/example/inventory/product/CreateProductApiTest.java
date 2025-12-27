@@ -3,13 +3,13 @@ package com.example.inventory.product;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-
-class CreateProductApiTest {
+@Tag("api")
+public class CreateProductApiTest {
 
     @BeforeAll
     static void setup() {
@@ -17,7 +17,6 @@ class CreateProductApiTest {
         RestAssured.port = 8080;
         RestAssured.basePath = "/api";
     }
-    @Disabled
     @Test
     void shouldCreateProductSuccessfully_whenValidDataProvided() {
 
@@ -43,7 +42,6 @@ class CreateProductApiTest {
                 .body("price", equalTo(1200.00f))
                 .body("quantity", equalTo(10));
     }
-    @Disabled
     @Test
     void shouldReturn400_whenNameIsMissing() {
 
@@ -65,7 +63,6 @@ class CreateProductApiTest {
                 .statusCode(400)
                 .body("fieldErrors.name", equalTo("Product name missing."));
     }
-    @Disabled
     @Test
     void shouldReturn400_whenQuantityIsZero() {
 
@@ -87,7 +84,6 @@ class CreateProductApiTest {
                 .statusCode(400)
                 .body("fieldErrors.quantity", equalTo("Quantity should be a positive integer."));
     }
-    @Disabled
     @Test
     void shouldReturn400_whenQuantityIsNegative() {
 
