@@ -30,6 +30,7 @@ The system shall allow the user to delete a product.
 - BR-2: Quantity cannot be negative or zero.
 - BR-3: Price cannot be negative.
 - BR-4: A discontinued product cannot be updated.
+- BR-5: Product price is mandatory.
 
 ## 4. Error Handling
 - The system shall display an error message when mandatory fields are missing.
