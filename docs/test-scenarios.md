@@ -78,3 +78,36 @@ Description: Verify that a discontinued product cannot be updated.
 ## TS-7: Delete Product
 Related Requirement: FR-4  
 Description: Verify that a product can be deleted.
+## TS-8 – Create Product with Missing Price
+
+### Feature
+Create Product API
+
+### Description
+Verify that the system does not allow creation of a product when the product price is missing and returns an appropriate validation error.
+
+### Business Context
+Product price is a mandatory field required to determine the product price.Creating a product without a price must be prevented to ensure data integrity.
+
+### Preconditions
+- Inventory Management API is running
+- User has permission to create products
+- API endpoint `/api/products` is accessible
+
+### Trigger
+A client sends a request to create a product without providing the `price` field.
+
+### Expected Behavior
+- The product is **not created**
+- The API rejects the request
+- A validation error related to the missing product price is returned
+
+### Expected Result Summary
+- HTTP response indicates a client error (4xx)
+- Error message clearly states that the product price is required
+- No product record is persisted in the system
+
+### Notes
+- This scenario focuses on API-level validation
+- Detailed validations (null, empty, whitespace) will be covered in individual test cases
+- This scenario is suitable for automation using RestAssured

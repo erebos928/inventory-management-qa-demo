@@ -64,6 +64,27 @@ public class CreateProductApiTest {
                 .body("fieldErrors.name", equalTo("Product name missing."));
     }
     @Test
+    void shouldReturn400_whenPriceIsMissing() {
+
+        String requestBody = """
+        {
+          "name": "",
+          "description": "Business laptop",
+          "quantity": 10
+        }
+        """;
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/products")
+                .then()
+                .statusCode(400)
+                .body("fieldErrors.price", equalTo("Price is required."));
+    }
+
+    @Test
     void shouldReturn400_whenQuantityIsZero() {
 
         String requestBody = """

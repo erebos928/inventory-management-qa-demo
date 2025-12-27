@@ -1,6 +1,6 @@
 # Inventory Management – Manual Test Cases
 
-## TC-1: Create Product with Valid Data
+## TC-1.1: Create Product with Valid Data
 
 **Related Scenario:** TS-1
 **Related Requirements:** FR-1
@@ -20,7 +20,7 @@
 * Product Name: "Laptop"
 * Quantity: 10
 * Status: Active
-
+* Price: 45
 **Steps:**
 
 1. Navigate to the Create Product page
@@ -37,7 +37,7 @@
 
 ---
 
-## TC-2: Create Product with Missing Name
+## TC-1.2: Create Product with Missing Name
 
 **Related Scenario:** TS-2
 **Related Requirements:** FR-1, BR-1
@@ -57,7 +57,7 @@
 * Product Name: (empty)
 * Quantity: 5
 * Status: Active
-
+* Price: 65
 **Steps:**
 
 1. Send a POST request to /api/products
@@ -69,6 +69,39 @@
 * HTTP status code is 400 Bad Request
 * Product is not created
 * Response contains validation error for missing product name
+
+## TC-1.3: Create Product with Missing Name
+
+**Related Scenario:** TS-8
+**Related Requirements:** FR-1, BR-5
+
+**Priority:** High
+**Severity:** Major
+**Test Type:** Functional / Negative
+**Automation Candidate:** Yes
+
+**Preconditions:**
+
+* User has access to the inventory management system
+* Inventory API running
+
+**Test Data:**
+
+* Product Name: Laptop
+* Quantity: 5
+* Status: Active
+* Price: (Empty)
+**Steps:**
+
+1. Send a POST request to /api/products
+2. Request body does not contain the price field
+3. Content-Type is application/json
+
+**Expected Result:**
+
+* HTTP status code is 400 Bad Request
+* Product is not created
+* Response contains validation error for missing product price
 
 ## TC-3: Create Product with Negative Quantity
 
@@ -89,7 +122,7 @@
 * Product Name: "Mouse"
 * Quantity: -3
 * Status: Active
-
+* Price: 10
 **Steps:**
 
 1. Navigate to the Create Product page
