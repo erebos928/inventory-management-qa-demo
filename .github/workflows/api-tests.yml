@@ -28,7 +28,7 @@ jobs:
             -e KC_BOOTSTRAP_ADMIN_USERNAME=admin \
             -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin \
             -e KC_HEALTH_ENABLED=true \
-            -v ${{ github.workspace }}/keycloak/realm.json:/opt/keycloak/data/import/realm.json \
+            -v ${{ github.workspace }}/keycloak/inventory-realm.json:/opt/keycloak/data/import/realm.json \
             quay.io/keycloak/keycloak:22.0.1 \
             start-dev --import-realm
           
