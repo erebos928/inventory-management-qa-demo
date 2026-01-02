@@ -676,7 +676,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "sumsMBoSxjPaQA3DpcLA0erYdxuMsElA",
       "redirectUris": [
         "/*"
       ],
