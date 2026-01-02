@@ -18,7 +18,7 @@ public class CreateProductApiTest {
     }
     @Test
     void shouldCreateProductSuccessfully_whenValidDataProvided() {
-
+        String accessTokenWithWrite = KeycloakTokenProvider.getAccessToken();
         String requestBody = """
             {
               "name": "Laptop",
@@ -29,6 +29,7 @@ public class CreateProductApiTest {
             """;
 
         given()
+                .auth().oauth2(accessTokenWithWrite)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
@@ -43,7 +44,7 @@ public class CreateProductApiTest {
     }
     @Test
     void shouldReturn400_whenNameIsMissing() {
-
+        String accessTokenWithWrite = KeycloakTokenProvider.getAccessToken();
         String requestBody = """
         {
           "name": "",
@@ -54,6 +55,7 @@ public class CreateProductApiTest {
         """;
 
         given()
+                .auth().oauth2(accessTokenWithWrite)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
@@ -64,7 +66,7 @@ public class CreateProductApiTest {
     }
     @Test
     void shouldReturn400_whenQuantityIsZero() {
-
+        String accessTokenWithWrite = KeycloakTokenProvider.getAccessToken();
         String requestBody = """
         {
           "name": "Laptop",
@@ -75,6 +77,7 @@ public class CreateProductApiTest {
         """;
 
         given()
+                .auth().oauth2(accessTokenWithWrite)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
@@ -85,7 +88,7 @@ public class CreateProductApiTest {
     }
     @Test
     void shouldReturn400_whenQuantityIsNegative() {
-
+        String accessTokenWithWrite = KeycloakTokenProvider.getAccessToken();
         String requestBody = """
         {
           "name": "Laptop",
@@ -96,6 +99,7 @@ public class CreateProductApiTest {
         """;
 
         given()
+                .auth().oauth2(accessTokenWithWrite)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
