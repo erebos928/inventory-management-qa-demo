@@ -66,7 +66,7 @@ public class CreateProductApiTest {
     }
     @Test
     void shouldReturn400_whenPriceIsMissing() {
-
+        String accessTokenWithWrite = KeycloakTokenProvider.getAccessToken();
         String requestBody = """
         {
           "name": "",
