@@ -57,7 +57,6 @@ jobs:
           sleep 5
 
       - name: Network Diagnostic
-        if: failure()
         run: |
           echo "Checking what is listening on ports:"
           sudo lsof -i -P -n | grep LISTEN
