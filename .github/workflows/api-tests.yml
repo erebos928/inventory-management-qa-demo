@@ -35,7 +35,11 @@ jobs:
           # Wait for Keycloak to be healthy before moving to the next step
           echo "Waiting for Keycloak to initialize..."
           timeout 60s bash -c 'until curl -s http://localhost:8080/health/live; do sleep 5; done'
-
+          # CRITICAL: Wait for the realm import to actually finish processing
+          echo "Waiting for realm import to settle..."
+          sleep 15
+          # Debug: Print logs if it still fails to see if import was successful
+          docker logs keycloak | grep "Import" || true
       - name: Build project
         run: mvn clean package -DskipTests
 
