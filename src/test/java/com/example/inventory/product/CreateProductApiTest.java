@@ -149,7 +149,6 @@ public class CreateProductApiTest {
                 .when()
                 .post("/products")
                 .then()
-                .log().all()
                 .statusCode(201);
     }
 

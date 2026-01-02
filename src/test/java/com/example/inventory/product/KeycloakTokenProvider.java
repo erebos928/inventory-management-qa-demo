@@ -8,6 +8,7 @@ public class KeycloakTokenProvider {
 
     public static String getAccessToken() {
         return given()
+                .log().all()
                 .contentType(ContentType.URLENC)
                 .formParam("grant_type", "client_credentials")
                 .formParam("client_id", "inventory-api")
