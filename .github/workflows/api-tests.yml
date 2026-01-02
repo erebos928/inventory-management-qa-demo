@@ -20,13 +20,50 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Start Keycloak
+        run: |
+          docker run -d \
+            --name keycloak \
+            -p 8080:8080 \
+            -e KC_BOOTSTRAP_ADMIN_USERNAME=admin \
+            -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin \
+            -e KC_HEALTH_ENABLED=true \
+            -v ${{ github.workspace }}/keycloak/inventory-realm.json:/opt/keycloak/data/import/realm.json \
+            quay.io/keycloak/keycloak:22.0.1 \
+            start-dev --import-realm
+          
+          # Wait for Keycloak to be healthy before moving to the next step
+          echo "Waiting for Keycloak to initialize..."
+          timeout 60s bash -c 'until curl -s http://localhost:8080/health/live; do sleep 5; done'
+          # CRITICAL: Wait for the realm import to actually finish processing
+          echo "Waiting for realm import to settle..."
+          sleep 15
+          # Debug: Print logs if it still fails to see if import was successful
+          docker logs keycloak | grep "Import" || true
       - name: Build project
         run: mvn clean package -DskipTests
 
       - name: Start Spring Boot application
         run: |
-          mvn spring-boot:run &
-          sleep 20
+          # Verify Keycloak is up first
+          curl -s http://localhost:8080/health/live
+          
+          # Run on 8070
+          mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8070" &
+          
+          echo "Waiting for Spring Boot to start on 8070..."
+          # Poll the health endpoint until it returns 200
+          timeout 60s bash -c 'until [ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8070/actuator/health)" == "200" ]; do sleep 5; done' || echo "Health check timed out, trying to proceed anyway..."
+          sleep 5
+
+      - name: Network Diagnostic
+        run: |
+          echo "Checking what is listening on ports:"
+          sudo lsof -i -P -n | grep LISTEN
+          echo "Testing connection to Keycloak token endpoint:"
+          curl -v http://localhost:8080/realms/inventory-realm/protocol/openid-connect/token
+
+
 
       - name: Run API tests
         run: mvn test -DexcludedGroups="" -Dgroups=api
