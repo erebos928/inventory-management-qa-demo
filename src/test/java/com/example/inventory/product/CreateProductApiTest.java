@@ -76,6 +76,7 @@ public class CreateProductApiTest {
         """;
 
         given()
+                .auth().oauth2(accessTokenWithWrite)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
@@ -148,6 +149,7 @@ public class CreateProductApiTest {
                 .when()
                 .post("/products")
                 .then()
+                .log().all()
                 .statusCode(201);
     }
 
