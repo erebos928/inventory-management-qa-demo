@@ -20,13 +20,31 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Start Keycloak
+        run: |
+          docker run -d \
+            --name keycloak \
+            -p 8080:8080 \
+            -e KC_BOOTSTRAP_ADMIN_USERNAME=admin \
+            -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin \
+            -e KC_HEALTH_ENABLED=true \
+            -v ${{ github.workspace }}/keycloak/realm.json:/opt/keycloak/data/import/realm.json \
+            quay.io/keycloak/keycloak:latest \
+            start-dev --import-realm
+          
+          # Wait for Keycloak to be healthy before moving to the next step
+          echo "Waiting for Keycloak to initialize..."
+          timeout 60s bash -c 'until curl -s http://localhost:8080/health/live; do sleep 5; done'
+
       - name: Build project
         run: mvn clean package -DskipTests
 
       - name: Start Spring Boot application
         run: |
-          mvn spring-boot:run &
+          # Use 8081 if Keycloak is using 8080 to avoid port conflict
+          mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081" &
           sleep 20
 
       - name: Run API tests
-        run: mvn test -DexcludedGroups="" -Dgroups=api
+        # Ensure your tests point to the app on 8081
+        run: mvn test -Dgroups=api

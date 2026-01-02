@@ -10,11 +10,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 @Tag("api")
 public class CreateProductApiTest {
-
     @BeforeAll
     static void setup() {
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 8080;
+        RestAssured.port = 8070;
         RestAssured.basePath = "/api";
     }
     @Test
@@ -125,6 +124,27 @@ public class CreateProductApiTest {
                 .then()
                 .statusCode(400)
                 .body("fieldErrors.quantity", equalTo("Quantity should be a positive integer."));
+    }
+    @Test
+    void shouldReturn201_whenAuthorizedRole() {
+        String accessTokenWithWrite = KeycloakTokenProvider.getAccessToken();
+        String productJson = """
+        {
+          "name": "Laptop",
+          "description": "Business laptop",
+          "price": 1200.00,
+          "quantity": 12
+        }
+        """;
+
+        given()
+                .auth().oauth2(accessTokenWithWrite)
+                .contentType(ContentType.JSON)
+                .body(productJson)
+                .when()
+                .post("/products")
+                .then()
+                .statusCode(201);
     }
 
 }
