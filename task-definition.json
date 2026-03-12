@@ -1,0 +1,39 @@
+{
+    "family": "InventoryTaskDefinition",
+    "executionRoleArn": "arn:aws:iam::923516172573:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "containerDefinitions": [
+        {
+            "name": "inventory-container",
+            "image": "923516172573.dkr.ecr.ca-central-1.amazonaws.com/my-s3-app:latest",
+            "essential": true,
+            "portMappings": [
+                {
+                    "name": "inventory-container-8070-tcp",
+                    "containerPort": 8070,
+                    "hostPort": 8070,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/InventoryTaskDefinition",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ca-central-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ]
+}
