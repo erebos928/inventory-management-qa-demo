@@ -1,4 +1,4 @@
-name: API Tests (RestAssured)
+name: API Tests and Deploy to Fargate
 
 on:
   push:
@@ -32,38 +32,68 @@ jobs:
             quay.io/keycloak/keycloak:22.0.1 \
             start-dev --import-realm
           
-          # Wait for Keycloak to be healthy before moving to the next step
           echo "Waiting for Keycloak to initialize..."
           timeout 60s bash -c 'until curl -s http://localhost:8080/health/live; do sleep 5; done'
-          # CRITICAL: Wait for the realm import to actually finish processing
           echo "Waiting for realm import to settle..."
           sleep 15
-          # Debug: Print logs if it still fails to see if import was successful
-          docker logs keycloak | grep "Import" || true
+
       - name: Build project
         run: mvn clean package -DskipTests
 
       - name: Start Spring Boot application
         run: |
-          # Verify Keycloak is up first
-          curl -s http://localhost:8080/health/live
-          
-          # Run on 8070
           mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8070" &
-          
           echo "Waiting for Spring Boot to start on 8070..."
-          # Poll the health endpoint until it returns 200
-          timeout 60s bash -c 'until [ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8070/actuator/health)" == "200" ]; do sleep 5; done' || echo "Health check timed out, trying to proceed anyway..."
+          timeout 60s bash -c 'until [ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8070/actuator/health)" == "200" ]; do sleep 5; done' || echo "Health check timed out..."
           sleep 5
-
-      - name: Network Diagnostic
-        run: |
-          echo "Checking what is listening on ports:"
-          sudo lsof -i -P -n | grep LISTEN
-          echo "Testing connection to Keycloak token endpoint:"
-          curl -v http://localhost:8080/realms/inventory-realm/protocol/openid-connect/token
-
-
 
       - name: Run API tests
         run: mvn test -DexcludedGroups="" -Dgroups=api
+
+  deploy:
+    name: Build Image and Deploy to ECS
+    needs: api-tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ca-central-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: my-s3-app
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: inventory-container
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: InventoryTaskDefinition-service-1cldmh6p
+          cluster: MyTinyGarden
+          wait-for-service-stability: true
