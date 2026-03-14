@@ -14,7 +14,7 @@ public class KeycloakTokenProvider {
                 .formParam("client_id", "inventory-api")
                 .formParam("client_secret", "sumsMBoSxjPaQA3DpcLA0erYdxuMsElA")
                 .when()
-                .post("http://localhost:8080/realms/inventory-realm/protocol/openid-connect/token")
+                .post("http://15.222.26.179:8080/realms/inventory-realm/protocol/openid-connect/token")
                 .then()
                 .statusCode(200)
                 .extract()
