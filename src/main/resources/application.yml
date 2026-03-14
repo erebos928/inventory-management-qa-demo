@@ -25,4 +25,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/inventory-realm
+          issuer-uri: http://http://15.222.26.179:8080/realms/inventory-realm
